@@ -1,54 +1,97 @@
 <div class="form-container">
 
   <div class="header">
-    <h1>Nuevo estudiante</h1>
+
+    <h1>
+      {{ isEditMode ? 'Editar estudiante' : 'Nuevo estudiante' }}
+    </h1>
+
+    <p>
+      {{ isEditMode
+        ? 'Modifica la información del estudiante'
+        : 'Registra un nuevo estudiante'
+      }}
+    </p>
+
   </div>
 
-  <form (ngSubmit)="save()">
 
-    <div class="form-group">
-      <label for="name">
-        Nombre
-      </label>
+  @if (loading) {
 
-      <input
-        id="name"
-        type="text"
-        name="name"
-        [(ngModel)]="name"
-        placeholder="Ingrese el nombre"
-      />
+    <div class="loading">
+
+      <mat-spinner diameter="40"></mat-spinner>
+
+      <span>
+        Cargando estudiante...
+      </span>
+
     </div>
 
-    @if (errorMessage) {
-      <div class="error">
-        {{ errorMessage }}
+  } @else {
+
+    <form (ngSubmit)="save()">
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>Nombre</mat-label>
+
+        <input
+          matInput
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Ingrese el nombre">
+
+      </mat-form-field>
+
+
+      @if (errorMessage) {
+
+        <div class="error">
+          {{ errorMessage }}
+        </div>
+
+      }
+
+
+      <div class="actions">
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="cancel()"
+          [disabled]="saving">
+
+          Cancelar
+
+        </button>
+
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="saving">
+
+          @if (saving) {
+
+            Guardando...
+
+          } @else {
+
+            {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+
+          }
+
+        </button>
+
       </div>
-    }
 
-    <div class="actions">
+    </form>
 
-      <button
-        type="button"
-        (click)="cancel()"
-        [disabled]="loading">
-        Cancelar
-      </button>
-
-      <button
-        type="submit"
-        [disabled]="loading">
-
-        @if (loading) {
-          Guardando...
-        } @else {
-          Guardar
-        }
-
-      </button>
-
-    </div>
-
-  </form>
+  }
 
 </div>

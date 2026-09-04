@@ -19,6 +19,10 @@ export const routes: Routes = [
         component: StudentForm
       },
       {
+        path: 'students/edit/:id',
+        component: StudentForm
+      },
+      {
         path: 'teachers',
         component: TeacherList
       },
