@@ -1,0 +1,54 @@
+<div class="students-container">
+
+  <div class="header">
+    <h1>Estudiantes</h1>
+
+    <button routerLink="/students/new">
+    + Nuevo estudiante
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (student of students; track student.studentId) {
+        <tr>
+          <td>{{ student.studentId }}</td>
+          <td>{{ student.name }}</td>
+          <td>
+            <button>Editar</button>
+            <button>Eliminar</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="pagination">
+
+    <button
+      (click)="previousPage()"
+      [disabled]="pageNumber === 1">
+      Anterior
+    </button>
+
+    <span>
+      Página {{ pageNumber }} de {{ totalPages }}
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="pageNumber === totalPages">
+      Siguiente
+    </button>
+
+  </div>
+
+</div>

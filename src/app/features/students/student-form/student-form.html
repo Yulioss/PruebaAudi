@@ -1,0 +1,54 @@
+<div class="form-container">
+
+  <div class="header">
+    <h1>Nuevo estudiante</h1>
+  </div>
+
+  <form (ngSubmit)="save()">
+
+    <div class="form-group">
+      <label for="name">
+        Nombre
+      </label>
+
+      <input
+        id="name"
+        type="text"
+        name="name"
+        [(ngModel)]="name"
+        placeholder="Ingrese el nombre"
+      />
+    </div>
+
+    @if (errorMessage) {
+      <div class="error">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <div class="actions">
+
+      <button
+        type="button"
+        (click)="cancel()"
+        [disabled]="loading">
+        Cancelar
+      </button>
+
+      <button
+        type="submit"
+        [disabled]="loading">
+
+        @if (loading) {
+          Guardando...
+        } @else {
+          Guardar
+        }
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>
