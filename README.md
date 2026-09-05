@@ -1,14 +1,15 @@
 # PruebaAudi - Frontend
 
-Aplicación web desarrollada con **Angular** como frontend para la prueba técnica de Audi.
+Aplicación web desarrollada con **Angular** para la prueba técnica de Audi.
 
-La aplicación permite gestionar:
+El frontend permite gestionar la información relacionada con:
 
 * Estudiantes
 * Profesores
 * Notas
+* Dashboard
 
-El frontend consume la API REST desarrollada en ASP.NET Core y proporciona interfaces para consultar, crear, editar y eliminar registros.
+La aplicación consume una API REST desarrollada en **ASP.NET Core 8**, utilizando PostgreSQL como base de datos.
 
 ---
 
@@ -18,26 +19,25 @@ El frontend consume la API REST desarrollada en ASP.NET Core y proporciona inter
 * TypeScript
 * Angular Material
 * Angular Router
-* Angular Forms
 * RxJS
-* Vitest
-* HTML5
+* HttpClient
 * SCSS
+* Vitest
 
-Las dependencias principales se encuentran definidas en `package.json`.
+El proyecto fue generado utilizando **Angular CLI 22.1.7** y utiliza Vitest como test runner para las pruebas unitarias.
 
 ---
 
 # Requisitos
 
-Para ejecutar el proyecto se requiere:
+Para ejecutar el proyecto localmente se requiere:
 
 * Node.js
 * npm
 * Angular CLI 22
-* Backend de la prueba ejecutándose
+* Backend de la aplicación ejecutándose
 
-El proyecto utiliza `npm@12.0.2` como package manager y Angular CLI `22.1.7`.
+Se recomienda utilizar una versión de Node.js compatible con Angular 22.
 
 ---
 
@@ -49,7 +49,7 @@ Clonar el repositorio:
 git clone https://github.com/Yulioss/PruebaAudi.git
 ```
 
-Ingresar al proyecto:
+Ingresar al directorio:
 
 ```bash
 cd PruebaAudi
@@ -68,183 +68,149 @@ npm install
 Para iniciar el servidor de desarrollo:
 
 ```bash
-npm start
-```
-
-También puede utilizarse:
-
-```bash
 ng serve
 ```
 
-La aplicación estará disponible normalmente en:
+También puede utilizarse el script configurado en el proyecto:
+
+```bash
+npm start
+```
+
+Una vez iniciado el servidor, acceder a:
 
 ```text
 http://localhost:4200/
 ```
 
-Angular CLI recarga automáticamente la aplicación cuando se realizan cambios en el código.
+Angular recarga automáticamente la aplicación cuando se modifican los archivos fuente.
 
 ---
 
-# Estructura del proyecto
+# Backend
 
-La aplicación utiliza una organización basada en funcionalidades:
+Este frontend consume el backend desarrollado específicamente para la prueba.
+
+Repositorio:
 
 ```text
-PruebaAudi/
-│
-├── public/
-│
-├── src/
-│   ├── app/
-│   │   ├── core/
-│   │   │
-│   │   ├── features/
-│   │   │   ├── students/
-│   │   │   ├── teachers/
-│   │   │   └── notes/
-│   │   │
-│   │   ├── layout/
-│   │   │
-│   │   ├── app.config.ts
-│   │   ├── app.routes.ts
-│   │   └── ...
-│   │
-│   ├── index.html
-│   ├── main.ts
-│   └── styles.scss
-│
-├── angular.json
-├── package.json
-├── package-lock.json
-└── tsconfig.json
+https://github.com/Yulioss/ApiPruebaAudi
 ```
 
-La carpeta `src/app` contiene la aplicación Angular y las funcionalidades están separadas por módulos funcionales como estudiantes, profesores y notas.
+El backend está desarrollado utilizando:
+
+* ASP.NET Core 8
+* Entity Framework Core
+* PostgreSQL
+* Npgsql
+* Arquitectura por capas
+
+Para que el frontend funcione correctamente, el backend debe estar ejecutándose y la URL configurada en el frontend debe apuntar al endpoint correspondiente.
+
+---
+
+# Arquitectura
+
+El proyecto utiliza una estructura organizada por funcionalidades y responsabilidades.
+
+```text
+src/
+└── app/
+    ├── core/
+    │
+    ├── features/
+    │   ├── students/
+    │   ├── teachers/
+    │   └── notes/
+    │
+    ├── layout/
+    │
+    ├── app.config.ts
+    ├── app.routes.ts
+    └── ...
+```
+
+### Core
+
+Contiene elementos compartidos de la aplicación, como servicios, modelos o funcionalidades que son utilizadas por diferentes módulos.
+
+### Features
+
+Contiene las funcionalidades principales de la aplicación.
+
+```text
+features/
+├── students/
+├── teachers/
+└── notes/
+```
+
+Esto permite mantener cada funcionalidad separada y facilita el mantenimiento del proyecto.
+
+### Layout
+
+Contiene la estructura visual principal de la aplicación.
 
 ---
 
 # Funcionalidades
 
+## Dashboard
+
+La aplicación cuenta con un dashboard que presenta información agregada obtenida desde el backend.
+
+El dashboard permite visualizar de manera resumida la información principal del sistema.
+
+---
+
 ## Estudiantes
 
-La sección de estudiantes permite:
+Permite:
 
-* Listar estudiantes.
+* Consultar estudiantes.
+* Buscar estudiantes.
 * Crear estudiantes.
 * Editar estudiantes.
 * Eliminar estudiantes.
-* Consultar información mediante la API.
-
-Rutas disponibles:
-
-```text
-/students
-/students/new
-/students/edit/:id
-```
-
-Estas rutas están configuradas en `app.routes.ts`.
+* Navegar mediante paginación.
 
 ---
 
 ## Profesores
 
-La sección de profesores permite gestionar los registros de profesores.
+Permite:
 
-Rutas:
-
-```text
-/teachers
-/teachers/new
-/teachers/edit/:id
-```
+* Consultar profesores.
+* Crear profesores.
+* Editar profesores.
+* Eliminar profesores.
 
 ---
 
 ## Notas
 
-La sección de notas permite gestionar las notas registradas en el sistema.
+Permite:
 
-Rutas:
-
-```text
-/notes
-/notes/new
-/notes/edit/:id
-```
-
----
-
-# Navegación
-
-La aplicación utiliza **Angular Router**.
-
-La estructura principal utiliza un `MainLayout` que contiene las diferentes funcionalidades:
-
-```text
-MainLayout
-│
-├── Students
-│   ├── List
-│   ├── New
-│   └── Edit
-│
-├── Teachers
-│   ├── List
-│   ├── New
-│   └── Edit
-│
-└── Notes
-    ├── List
-    ├── New
-    └── Edit
-```
-
-La ruta raíz redirige automáticamente a:
-
-```text
-/students
-```
+* Consultar notas.
+* Buscar notas.
+* Crear notas.
+* Editar notas.
+* Eliminar notas.
+* Consultar información mediante paginación.
 
 ---
 
-# Configuración de Angular
+# Comunicación con la API
 
-La configuración principal de la aplicación se encuentra en:
+La comunicación con el backend se realiza mediante `HttpClient` de Angular.
 
-```text
-src/app/app.config.ts
-```
-
-Actualmente se registran:
-
-* Angular Router.
-* HttpClient.
-
-```typescript
-providers: [
-  provideRouter(routes),
-  provideHttpClient()
-]
-```
-
-Esto permite utilizar el sistema de rutas y realizar peticiones HTTP hacia el backend.
-
----
-
-# Comunicación con el Backend
-
-El frontend utiliza `HttpClient` de Angular para comunicarse con la API REST.
-
-El flujo general es:
+El flujo de comunicación es:
 
 ```text
 Usuario
    │
    ▼
-Angular Component
+Component
    │
    ▼
 Service
@@ -256,37 +222,100 @@ HttpClient
 ASP.NET Core API
    │
    ▼
+Entity Framework Core
+   │
+   ▼
 PostgreSQL
 ```
 
-La URL de la API debe configurarse de acuerdo con el puerto donde se esté ejecutando el backend.
+La utilización de servicios permite separar la lógica de comunicación HTTP de los componentes visuales.
 
 ---
 
-# Backend
+# Rutas
 
-El backend utilizado por esta aplicación se encuentra en el siguiente repositorio:
+La navegación de la aplicación se administra mediante **Angular Router**.
+
+Las principales funcionalidades están organizadas mediante rutas independientes:
 
 ```text
-https://github.com/Yulioss/ApiPruebaAudi
+/students
+/teachers
+/notes
+/dashboard
 ```
 
-El backend está desarrollado con:
-
-* ASP.NET Core 8
-* Entity Framework Core
-* PostgreSQL
-* Npgsql
+Las rutas de creación y edición siguen la estructura correspondiente a cada funcionalidad.
 
 ---
 
-# Ejecución completa del proyecto
+# Paginación
 
-Para ejecutar el sistema completo se deben iniciar tanto el backend como el frontend.
+Las listas que manejan grandes cantidades de registros utilizan paginación.
+
+El frontend envía al backend información como:
+
+```text
+pageNumber
+pageSize
+searchTerm
+```
+
+Ejemplo:
+
+```text
+?pageNumber=1&pageSize=10&searchTerm=Juan
+```
+
+Esto permite evitar cargar todos los registros simultáneamente y mejora el rendimiento de las consultas.
+
+---
+
+# Manejo de formularios
+
+Los formularios utilizados para crear y editar información realizan validaciones antes de enviar los datos al backend.
+
+La validación permite controlar:
+
+* Campos requeridos.
+* Valores inválidos.
+* Datos incompletos.
+* Errores provenientes de la API.
+
+---
+
+# Manejo de errores
+
+Los errores producidos durante las peticiones HTTP son controlados desde la aplicación para proporcionar retroalimentación al usuario.
+
+Los errores provenientes del backend pueden ser mostrados en la interfaz de acuerdo con el código de respuesta HTTP.
+
+---
+
+# Angular Material
+
+La aplicación utiliza componentes de **Angular Material** para construir la interfaz de usuario.
+
+Esto permite utilizar componentes reutilizables como:
+
+* Tablas.
+* Formularios.
+* Botones.
+* Inputs.
+* Dialogs.
+* Paginadores.
+* Iconos.
+* Mensajes.
+
+---
+
+# Ejecutar el proyecto completo
+
+Para ejecutar el sistema completo se deben levantar el backend y el frontend.
 
 ## 1. Backend
 
-Clonar y ejecutar:
+Clonar:
 
 ```bash
 git clone https://github.com/Yulioss/ApiPruebaAudi.git
@@ -302,7 +331,7 @@ dotnet ef database update \
   --startup-project ApiPruebaAudi
 ```
 
-Ejecutar la API:
+Ejecutar:
 
 ```bash
 dotnet run --project ApiPruebaAudi
@@ -316,43 +345,16 @@ En otra terminal:
 
 ```bash
 git clone https://github.com/Yulioss/PruebaAudi.git
-```
-
-Instalar dependencias:
-
-```bash
+cd PruebaAudi
 npm install
-```
-
-Ejecutar:
-
-```bash
 npm start
 ```
 
 Abrir:
 
 ```text
-http://localhost:4200
+http://localhost:4200/
 ```
-
----
-
-# Rutas de la aplicación
-
-| Funcionalidad     | Ruta                 |
-| ----------------- | -------------------- |
-| Estudiantes       | `/students`          |
-| Crear estudiante  | `/students/new`      |
-| Editar estudiante | `/students/edit/:id` |
-| Profesores        | `/teachers`          |
-| Crear profesor    | `/teachers/new`      |
-| Editar profesor   | `/teachers/edit/:id` |
-| Notas             | `/notes`             |
-| Crear nota        | `/notes/new`         |
-| Editar nota       | `/notes/edit/:id`    |
-
-Las rutas corresponden a la configuración actual de Angular.
 
 ---
 
@@ -361,22 +363,22 @@ Las rutas corresponden a la configuración actual de Angular.
 Para generar una compilación del proyecto:
 
 ```bash
-npm run build
-```
-
-También se puede utilizar:
-
-```bash
 ng build
 ```
 
-Los archivos compilados se generan dentro de la carpeta:
+Los archivos generados se almacenan en:
 
 ```text
 dist/
 ```
 
-Angular realiza optimizaciones para la compilación de producción.
+Angular realiza optimizaciones sobre la compilación para mejorar el rendimiento de la aplicación.
+
+Para una compilación de producción:
+
+```bash
+ng build --configuration production
+```
 
 ---
 
@@ -387,133 +389,82 @@ El proyecto utiliza **Vitest** como test runner.
 Para ejecutar las pruebas:
 
 ```bash
-npm test
-```
-
-También:
-
-```bash
 ng test
 ```
 
-La configuración de dependencias del proyecto incluye Vitest y JSDOM.
+El comando ejecuta las pruebas unitarias configuradas en el proyecto.
 
 ---
 
-# End-to-End Testing
+# Generación de componentes
 
-Angular CLI permite configurar pruebas end-to-end mediante:
-
-```bash
-ng e2e
-```
-
-El proyecto no incluye un framework E2E por defecto, por lo que puede utilizarse la herramienta que se considere más adecuada.
-
----
-
-# Comandos útiles
-
-### Instalar dependencias
-
-```bash
-npm install
-```
-
-### Ejecutar aplicación
-
-```bash
-npm start
-```
-
-### Ejecutar Angular CLI
-
-```bash
-ng serve
-```
-
-### Compilar
-
-```bash
-npm run build
-```
-
-### Compilar observando cambios
-
-```bash
-npm run watch
-```
-
-### Ejecutar pruebas
-
-```bash
-npm test
-```
-
-### Ejecutar pruebas directamente con Angular CLI
-
-```bash
-ng test
-```
-
-### Generar un componente
+Angular CLI permite generar nuevos componentes mediante:
 
 ```bash
 ng generate component nombre-componente
 ```
 
----
+También puede utilizarse la forma abreviada:
 
-# Arquitectura de la aplicación
-
-La aplicación sigue una separación por responsabilidades:
-
-```text
-                    ┌──────────────────┐
-                    │      Angular     │
-                    │       View       │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    Components    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │     Services     │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │    HttpClient    │
-                    └────────┬─────────┘
-                             │
-                             ▼
-                    ┌──────────────────┐
-                    │   ASP.NET Core   │
-                    │       API        │
-                    └──────────────────┘
+```bash
+ng g c nombre-componente
 ```
 
-Esto permite mantener separadas la presentación, navegación y comunicación con el backend.
+Para consultar todas las opciones disponibles:
+
+```bash
+ng generate --help
+```
 
 ---
 
-# Dependencias principales
+# Comandos principales
 
-| Dependencia      | Uso                      |
-| ---------------- | ------------------------ |
-| Angular          | Framework principal      |
-| Angular Material | Componentes de interfaz  |
-| Angular Router   | Navegación               |
-| Angular Forms    | Formularios              |
-| RxJS             | Programación reactiva    |
-| TypeScript       | Lenguaje principal       |
-| Vitest           | Pruebas unitarias        |
-| JSDOM            | Entorno DOM para pruebas |
+| Comando                 | Descripción                      |
+| ----------------------- | -------------------------------- |
+| `npm install`           | Instala las dependencias         |
+| `npm start`             | Inicia el servidor de desarrollo |
+| `ng serve`              | Inicia el servidor de Angular    |
+| `ng build`              | Compila la aplicación            |
+| `ng test`               | Ejecuta las pruebas unitarias    |
+| `ng generate component` | Genera un componente             |
+| `ng generate --help`    | Muestra los comandos disponibles |
 
-Las versiones exactas se encuentran en `package.json`.
+---
+
+# Estructura general del sistema
+
+```text
+┌──────────────────────────┐
+│        Angular           │
+│        Frontend          │
+└────────────┬─────────────┘
+             │
+             │ HTTP
+             ▼
+┌──────────────────────────┐
+│      ASP.NET Core        │
+│          API             │
+└────────────┬─────────────┘
+             │
+             │ Entity Framework
+             ▼
+┌──────────────────────────┐
+│       PostgreSQL         │
+└──────────────────────────┘
+```
+
+---
+
+# Backend relacionado
+
+El backend correspondiente a este proyecto se encuentra en:
+
+```text
+https://github.com/Yulioss/ApiPruebaAudi
+```
+
+Allí se encuentra la implementación de la API, acceso a datos, entidades, repositorios y migraciones de Entity Framework Core.
 
 ---
 
