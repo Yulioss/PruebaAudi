@@ -16,12 +16,14 @@ export class TeacherService {
 
   getTeachers(
     pageNumber: number = 1,
-    pageSize: number = 10
+    pageSize: number = 10,
+    searchTerm: string = ''
   ): Observable<PagedResponse<TeacherDTO>> {
 
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
+      .set('pageSize', pageSize)
+      .set('searchTerm', searchTerm);
 
     return this.http.get<PagedResponse<TeacherDTO>>(
       this.apiUrl,

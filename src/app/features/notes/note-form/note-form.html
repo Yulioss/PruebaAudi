@@ -1,0 +1,216 @@
+<div class="form-container">
+
+  <div class="form-header">
+
+    <div>
+
+      <h1>
+        {{ isEditMode
+          ? 'Editar nota'
+          : 'Nueva nota'
+        }}
+      </h1>
+
+      <p>
+        {{ isEditMode
+          ? 'Modifica la información de la nota'
+          : 'Registra una nueva nota académica'
+        }}
+      </p>
+
+    </div>
+
+  </div>
+
+  @if (loading) {
+
+    <div class="loading">
+
+      <mat-spinner diameter="40"></mat-spinner>
+
+      <span>
+        Cargando información...
+      </span>
+
+    </div>
+
+  } @else {
+
+    <form
+      class="note-form"
+      (ngSubmit)="save()">
+
+      <!-- Nombre -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Nombre de la nota
+        </mat-label>
+
+        <input
+          matInput
+          type="text"
+          name="name"
+          [(ngModel)]="name"
+          placeholder="Ej: Parcial 1"
+          maxlength="50"
+          autocomplete="off">
+
+
+      </mat-form-field>
+
+      <!-- Valor -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Valor
+        </mat-label>
+
+        <input
+          matInput
+          type="number"
+          name="value"
+          [(ngModel)]="value"
+          min="0"
+          max="5"
+          step="0.1"
+          placeholder="0 - 5">
+
+        <mat-hint>
+          La nota debe estar entre 0 y 5
+        </mat-hint>
+
+      </mat-form-field>
+
+      <!-- Estudiante -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Estudiante
+        </mat-label>
+
+        <mat-select
+          name="studentId"
+          [(ngModel)]="studentId">
+
+          <mat-option [value]="null">
+            Seleccione un estudiante
+          </mat-option>
+
+          @for (
+            student of students;
+            track student.studentId
+          ) {
+
+            <mat-option
+              [value]="student.studentId">
+
+              {{ student.name }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <!-- Profesor -->
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width">
+
+        <mat-label>
+          Profesor
+        </mat-label>
+
+        <mat-select
+          name="teacherId"
+          [(ngModel)]="teacherId">
+
+          <mat-option [value]="null">
+            Seleccione un profesor
+          </mat-option>
+
+          @for (
+            teacher of teachers;
+            track teacher.teacherId
+          ) {
+
+            <mat-option
+              [value]="teacher.teacherId">
+
+              {{ teacher.name }}
+
+            </mat-option>
+
+          }
+
+        </mat-select>
+
+      </mat-form-field>
+
+      <!-- Error -->
+
+      @if (errorMessage) {
+
+        <div class="error-message">
+
+          {{ errorMessage }}
+
+        </div>
+
+      }
+
+      <!-- Botones -->
+
+      <div class="form-actions">
+
+        <button
+          mat-stroked-button
+          type="button"
+          (click)="cancel()"
+          [disabled]="saving">
+
+          Cancelar
+
+        </button>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="saving">
+
+          @if (saving) {
+
+            Guardando...
+
+          } @else {
+
+            {{ isEditMode
+              ? 'Actualizar'
+              : 'Guardar'
+            }}
+
+          }
+
+        </button>
+
+      </div>
+
+    </form>
+
+  }
+
+</div>

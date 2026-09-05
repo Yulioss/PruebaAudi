@@ -9,9 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
 import { StudentService } from '../../../core/services/student/student.service';
 import { StudentDTO } from '../../../core/models/student.model';
+import { NotificationService } from '../../../core/services/notification/notification.service';
 
 @Component({
   selector: 'app-student-list',
@@ -51,7 +51,7 @@ export class StudentList implements OnInit {
   searchTerm = '';
 
   constructor(
-    private studentService: StudentService, private cdr: ChangeDetectorRef
+    private studentService: StudentService, private cdr: ChangeDetectorRef, private notification: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class StudentList implements OnInit {
   this.loading = true;
 
   this.studentService
-    .getStudents(this.pageNumber, this.pageSize)
+    .getStudents(this.pageNumber, this.pageSize, this.searchTerm)
     .subscribe({
       next: (response) => {
   this.students = response.items;
@@ -88,9 +88,16 @@ export class StudentList implements OnInit {
     this.loadStudents();
   }
 
-  clearSearch(): void {
-    this.searchTerm = '';
-  }
+     searchStudents(): void {
+  this.pageNumber = 1;
+  this.loadStudents();
+}
+
+ clearSearch(): void {
+  this.searchTerm = '';
+  this.pageNumber = 1;
+  this.loadStudents();
+}
 
   deleteStudent(student: StudentDTO): void {
 
@@ -107,7 +114,9 @@ export class StudentList implements OnInit {
     .subscribe({
 
       next: () => {
-
+        this.notification.success(
+          'Estudiante eliminado correctamente.'
+        );
         this.loadStudents();
 
       },

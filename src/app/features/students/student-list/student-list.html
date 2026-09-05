@@ -36,7 +36,8 @@
         <input
           matInput
           [(ngModel)]="searchTerm"
-          placeholder="Nombre del estudiante">
+          placeholder="Nombre del estudiante"
+          (keyup.enter)="searchStudents()">
 
         @if (searchTerm) {
 

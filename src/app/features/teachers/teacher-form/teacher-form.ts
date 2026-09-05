@@ -7,10 +7,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NotificationService } from '../../../core/services/notification/notification.service';
-import { StudentService } from '../../../core/services/student/student.service';
+import { TeacherService } from '../../../core/services/teacher/teacher.service';
 
 @Component({
-  selector: 'app-student-form',
+  selector: 'app-teacher-form',
   imports: [
     FormsModule,
     MatButtonModule,
@@ -18,12 +18,12 @@ import { StudentService } from '../../../core/services/student/student.service';
     MatInputModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './student-form.html',
-  styleUrl: './student-form.scss'
+  templateUrl: './teacher-form.html',
+  styleUrl: './teacher-form.scss'
 })
-export class StudentForm implements OnInit {
+export class TeacherForm implements OnInit {
 
-  studentId: number | null = null;
+  teacherId: number | null = null;
 
   name = '';
 
@@ -33,7 +33,7 @@ export class StudentForm implements OnInit {
   errorMessage = '';
 
   constructor(
-    private studentService: StudentService,
+    private teacherService: TeacherService,
     private router: Router,
     private route: ActivatedRoute,
     private cdr: ChangeDetectorRef,
@@ -45,30 +45,31 @@ export class StudentForm implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
-      this.studentId = Number(id);
-      this.loadStudent();
+      this.teacherId = Number(id);
+      this.loadTeacher();
     }
   }
 
   get isEditMode(): boolean {
-    return this.studentId !== null;
+    return this.teacherId !== null;
   }
 
-  loadStudent(): void {
+  loadTeacher(): void {
 
-    if (this.studentId === null) {
+    if (this.teacherId === null) {
       return;
     }
 
     this.loading = true;
     this.errorMessage = '';
 
-    this.studentService
-      .getStudent(this.studentId)
+    this.teacherService
+      .getTeacher(this.teacherId)
       .subscribe({
-        next: (student) => {
 
-          this.name = student.name;
+        next: (teacher) => {
+
+          this.name = teacher.name;
 
           this.loading = false;
           this.cdr.detectChanges();
@@ -77,16 +78,17 @@ export class StudentForm implements OnInit {
         error: (error) => {
 
           console.error(
-            'Error cargando estudiante:',
+            'Error cargando profesor:',
             error
           );
 
           this.errorMessage =
             error.error?.message ??
-            'No fue posible cargar el estudiante.';
+            'No fue posible cargar el profesor.';
 
           this.loading = false;
         }
+
       });
   }
 
@@ -103,36 +105,35 @@ export class StudentForm implements OnInit {
     this.saving = true;
     this.errorMessage = '';
 
-    const student = {
+    const teacher = {
       name: this.name.trim()
     };
 
     if (this.isEditMode) {
 
-      this.updateStudent(student);
+      this.updateTeacher(teacher);
 
     } else {
 
-      this.createStudent(student);
+      this.createTeacher(teacher);
 
     }
   }
 
-  private createStudent(
-    student: { name: string }
+  private createTeacher(
+    teacher: { name: string }
   ): void {
 
-    this.studentService
-      .createStudent(student)
+    this.teacherService
+      .createTeacher(teacher)
       .subscribe({
 
         next: () => {
-
-          this.notification.success(
-          'Estudiante creado correctamente.'
+        this.notification.success(
+          'Profesor creado correctamente.'
         );
           this.router.navigate([
-            '/students'
+            '/teachers'
           ]);
 
         },
@@ -140,13 +141,13 @@ export class StudentForm implements OnInit {
         error: (error) => {
 
           console.error(
-            'Error creando estudiante:',
+            'Error creando profesor:',
             error
           );
 
           this.errorMessage =
             error.error?.message ??
-            'No fue posible crear el estudiante.';
+            'No fue posible crear el profesor.';
 
           this.saving = false;
         }
@@ -154,24 +155,23 @@ export class StudentForm implements OnInit {
       });
   }
 
-  private updateStudent(
-    student: { name: string }
+  private updateTeacher(
+    teacher: { name: string }
   ): void {
 
-    this.studentService
-      .updateStudent(
-        this.studentId!,
-        student
+    this.teacherService
+      .updateTeacher(
+        this.teacherId!,
+        teacher
       )
       .subscribe({
 
         next: () => {
-
           this.notification.success(
-          'Estudiante actualizado correctamente.'
+          'Profesor actualizado correctamente.'
         );
           this.router.navigate([
-            '/students'
+            '/teachers'
           ]);
 
         },
@@ -179,13 +179,13 @@ export class StudentForm implements OnInit {
         error: (error) => {
 
           console.error(
-            'Error actualizando estudiante:',
+            'Error actualizando profesor:',
             error
           );
 
           this.errorMessage =
             error.error?.message ??
-            'No fue posible actualizar el estudiante.';
+            'No fue posible actualizar el profesor.';
 
           this.saving = false;
         }
@@ -196,7 +196,7 @@ export class StudentForm implements OnInit {
   cancel(): void {
 
     this.router.navigate([
-      '/students'
+      '/teachers'
     ]);
   }
 }

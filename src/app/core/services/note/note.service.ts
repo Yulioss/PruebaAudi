@@ -16,12 +16,14 @@ export class NoteService {
 
   getNotes(
     pageNumber: number = 1,
-    pageSize: number = 10
+    pageSize: number = 10,
+    searchTerm: string = ''
   ): Observable<PagedResponse<NoteDTO>> {
 
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
+      .set('pageSize', pageSize)
+      .set('searchTerm', searchTerm);
 
     return this.http.get<PagedResponse<NoteDTO>>(
       this.apiUrl,

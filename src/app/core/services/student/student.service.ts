@@ -20,12 +20,14 @@ export class StudentService {
 
   getStudents(
     pageNumber: number = 1,
-    pageSize: number = 10
+    pageSize: number = 10,
+    searchTerm: string = ''
   ): Observable<PagedResponse<StudentDTO>> {
 
     const params = new HttpParams()
       .set('pageNumber', pageNumber)
-      .set('pageSize', pageSize);
+      .set('pageSize', pageSize)
+      .set('searchTerm', searchTerm);
 
     return this.http.get<PagedResponse<StudentDTO>>(
       this.apiUrl,

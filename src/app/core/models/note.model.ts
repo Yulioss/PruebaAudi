@@ -3,7 +3,9 @@ export interface NoteDTO {
   name: string;
   value: number;
   studentId: number;
+  studentName: string;
   teacherId: number;
+  teacherName: string;
 }
 
 export interface CreateNoteDTO {
