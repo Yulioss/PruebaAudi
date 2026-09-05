@@ -63,4 +63,11 @@ export class NoteService {
       `${this.apiUrl}/${id}`
     );
   }
+
+  generateNotes(quantity: number): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/Generate`,
+    { quantity }
+  );
+}
 }

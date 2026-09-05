@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>Generar notas</h2>
+
+<mat-dialog-content>
+
+  <p>
+    Indica cuántas notas aleatorias deseas generar.
+  </p>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cantidad</mat-label>
+
+    <input
+      matInput
+      type="number"
+      [(ngModel)]="quantity"
+      min="1"
+      max="10000">
+
+    <mat-hint>
+      Entre 1 y 10.000 notas
+    </mat-hint>
+  </mat-form-field>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+
+  <button
+    mat-button
+    type="button"
+    (click)="cancel()">
+    Cancelar
+  </button>
+
+  <button
+    mat-flat-button
+    type="button"
+    (click)="generate()"
+    [disabled]="quantity < 1 || quantity > 10000">
+    Generar
+  </button>
+
+</mat-dialog-actions>

@@ -16,6 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NotificationService } from '../../../core/services/notification/notification.service';
 import { NoteService } from '../../../core/services/note/note.service';
 import { NoteDTO } from '../../../core/models/note.model';
+import { MatDialog } from '@angular/material/dialog';
+import { NoteGenerateDialog } from '../note-generate-dialog/note-generate-dialog';
 
 @Component({
   selector: 'app-note-list',
@@ -61,7 +63,8 @@ export class NoteList implements OnInit {
   constructor(
     private noteService: NoteService,
     private cdr: ChangeDetectorRef,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private dialog: MatDialog 
   ) {}
 
   ngOnInit(): void {
@@ -114,6 +117,53 @@ export class NoteList implements OnInit {
   this.searchTerm = '';
   this.pageNumber = 1;
   this.loadNotes();
+}
+
+private generateNotes(quantity: number): void {
+
+  this.loading = true;
+  this.cdr.detectChanges();
+
+  this.noteService.generateNotes(quantity).subscribe({
+    next: (response) => {
+
+      this.notification.success(
+        response.message ?? 'Notas generadas correctamente.'
+      );
+
+      this.loadNotes();
+    },
+
+    error: (error) => {
+
+      console.error('Error generando notas:', error);
+
+      this.loading = false;
+
+      this.notification.error(
+        error.error?.message ??
+        'No fue posible generar las notas.'
+      );
+
+      this.cdr.detectChanges();
+    }
+  });
+}
+
+openGenerateDialog(): void {
+  const dialogRef = this.dialog.open(NoteGenerateDialog, {
+    width: '400px',
+    disableClose: true
+  });
+
+  dialogRef.afterClosed().subscribe((quantity: number | undefined) => {
+
+    if (quantity === undefined) {
+      return;
+    }
+
+    this.generateNotes(quantity);
+  });
 }
 
   deleteNote(note: NoteDTO): void {
