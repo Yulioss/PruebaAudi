@@ -12,6 +12,9 @@ El frontend permite gestionar la información relacionada con:
 La aplicación consume una API REST desarrollada en **ASP.NET Core 8**, utilizando PostgreSQL como base de datos.
 
 ---
+##Arquitectura
+Arquitectura basada en funcionalidades (Feature-based Architecture)
+
 
 ## Tecnologías
 
