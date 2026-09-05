@@ -6,6 +6,7 @@ import { TeacherList } from './features/teachers/teacher-list/teacher-list';
 import { TeacherForm } from './features/teachers/teacher-form/teacher-form';
 import { NoteList } from './features/notes/note-list/note-list';
 import { NoteForm } from './features/notes/note-form/note-form';
+import { Dashboard } from './features/dashboard/dashboard';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,10 @@ export const routes: Routes = [
       {
         path: 'notes/edit/:id',
         component: NoteForm
+      },
+      {
+        path: 'dashboard',
+        component: Dashboard
       },
       {
         path: '',

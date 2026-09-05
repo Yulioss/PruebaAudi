@@ -1,0 +1,123 @@
+<div class="dashboard">
+
+  <div class="dashboard-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Resumen general del sistema</p>
+    </div>
+  </div>
+
+  @if (loading) {
+
+    <div class="loading">
+      <mat-icon>hourglass_empty</mat-icon>
+      <span>Cargando estadísticas...</span>
+    </div>
+
+  } @else if (errorMessage) {
+
+    <mat-card class="error-card">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </mat-card>
+
+  } @else if (dashboard) {
+
+    <div class="statistics-grid">
+
+      <mat-card class="stat-card">
+
+        <mat-card-content>
+
+          <div class="stat-icon">
+            <mat-icon>school</mat-icon>
+          </div>
+
+          <div class="stat-info">
+            <span class="stat-label">
+              Estudiantes
+            </span>
+
+            <span class="stat-value">
+              {{ dashboard.totalStudents }}
+            </span>
+          </div>
+
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <mat-card class="stat-card">
+
+        <mat-card-content>
+
+          <div class="stat-icon">
+            <mat-icon>person</mat-icon>
+          </div>
+
+          <div class="stat-info">
+            <span class="stat-label">
+              Profesores
+            </span>
+
+            <span class="stat-value">
+              {{ dashboard.totalTeachers }}
+            </span>
+          </div>
+
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <mat-card class="stat-card">
+
+        <mat-card-content>
+
+          <div class="stat-icon">
+            <mat-icon>description</mat-icon>
+          </div>
+
+          <div class="stat-info">
+            <span class="stat-label">
+              Notas
+            </span>
+
+            <span class="stat-value">
+              {{ dashboard.totalNotes }}
+            </span>
+          </div>
+
+        </mat-card-content>
+
+      </mat-card>
+
+
+      <mat-card class="stat-card">
+
+        <mat-card-content>
+
+          <div class="stat-icon">
+            <mat-icon>star</mat-icon>
+          </div>
+
+          <div class="stat-info">
+            <span class="stat-label">
+              Promedio general
+            </span>
+
+            <span class="stat-value">
+              {{ dashboard.averageNote }}
+            </span>
+          </div>
+
+        </mat-card-content>
+
+      </mat-card>
+
+    </div>
+
+  }
+
+</div>
