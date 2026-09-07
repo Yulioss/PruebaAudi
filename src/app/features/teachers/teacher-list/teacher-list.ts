@@ -141,12 +141,13 @@ export class TeacherList implements OnInit {
         },
 
         error: (error) => {
+          console.error('Error eliminando profesor:', error);
 
-          console.error(
-            'Error eliminando profesor:',
-            error
-          );
+          const message =
+            error.error?.Message ||
+            'No se pudo eliminar el profesor.';
 
+          this.notification.error(message);
         }
 
       });

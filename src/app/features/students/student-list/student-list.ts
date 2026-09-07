@@ -122,13 +122,14 @@ export class StudentList implements OnInit {
       },
 
       error: (error) => {
+      console.error('Error eliminando estudiante:', error);
 
-        console.error(
-          'Error eliminando estudiante:',
-          error
-        );
+      const message =
+        error.error?.Message ||
+        'No se pudo eliminar el estudiante.';
 
-      }
+      this.notification.error(message);
+    }
 
     });
 }
